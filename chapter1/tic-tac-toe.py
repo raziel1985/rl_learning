@@ -186,6 +186,9 @@ def train(episodes=10000, save_interval=1000):
             # 更新Q值
             next_available_actions = env.get_available_actions()
             if env.current_player == 1:  # 玩家2刚刚行动
+                # TODO(roger): 这里在更新Q表时，并没有考虑对手是否会更快获得胜利。
+                # 每次仅选择了自己的最优方案，state完全没有体现双方的情况，缺少博弈过程。很有可能在较差的路径上增加了reward。
+                # 这种方案无论训练多少轮，结果都不会好。
                 agent2.update(state, action, reward, next_state, next_available_actions, done)
             else:  # 玩家1刚刚行动
                 agent1.update(state, action, reward, next_state, next_available_actions, done)
